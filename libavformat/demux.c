@@ -213,14 +213,29 @@ static int update_stream_avctx(AVFormatContext *s)
     return 0;
 }
 
+/**
+ * @brief 打开一个输入媒体文件。
+ * 
+ * @param ps 用户提供的 AVFormatContext 的指针，可能是一个指向 NULL 的指针来分配一个新的上下文。
+ * @param filename 要打开的文件名。
+ * @param fmt 如果非 NULL，此参数强制使用特定的输入格式。
+ * @param options 填充 AVFormatContext 和解复用器私有选项的字典。返回时，该参数将被销毁并替换为包含未找到选项的字典。
+ * 
+ * @return 成功返回0，失败返回负的 AVERROR。
+ */
 int avformat_open_input(AVFormatContext **ps, const char *filename,
                         const AVInputFormat *fmt, AVDictionary **options)
 {
+    // 获取提供的格式上下文
     FormatContextInternal *fci;
+
+    // 内部格式上下文
     AVFormatContext *s = *ps;
     FFFormatContext *si;
+    // 用于选项的临时字典
     AVDictionary *tmp = NULL;
     ID3v2ExtraMeta *id3v2_extra_meta = NULL;
+    //返回值
     int ret = 0;
 
     if (!s && !(s = avformat_alloc_context()))
