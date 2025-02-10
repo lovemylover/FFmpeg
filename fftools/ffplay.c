@@ -3157,8 +3157,9 @@ static int read_thread(void *arg)
 static VideoState *stream_open(const char *filename,
                                const AVInputFormat *iformat)
 {
+    // 视频状态指针，最终要返回
     VideoState *is;
-
+    // 申请VideoState的内存地址
     is = av_mallocz(sizeof(VideoState));
     if (!is)
         return NULL;
@@ -3758,13 +3759,14 @@ int main(int argc, char **argv)
 {
     int flags, ret;
     VideoState *is;
-
+    // 初始化 平台
     init_dynload();
-
+    // 设置日志标志
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
+    // 解析日志等级
     parse_loglevel(argc, argv, options);
 
-    /* register all codecs, demux and protocols */
+    /* register all codecs, demux and protocols 注册所有解码器与解复用与协议 */
 #if CONFIG_AVDEVICE
     avdevice_register_all();
 #endif
@@ -3880,7 +3882,7 @@ int main(int argc, char **argv)
             }
         }
     }
-
+    // 打开流
     is = stream_open(input_filename, file_iformat);
     if (!is) {
         av_log(NULL, AV_LOG_FATAL, "Failed to initialize VideoState!\n");
